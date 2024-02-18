@@ -1,4 +1,6 @@
+#pragma once
 #include <raylib.h>
+#include "data.hpp"
 
 struct PAWN_DATA
 {
@@ -12,9 +14,10 @@ class Pawn
 	public:
 		Pawn();
 		~Pawn();
-		void Draw();
+		void Draw(int id);
 		void Update();
 
-	private:
 		PAWN_DATA pawns[16];
+
+	private:
 };

@@ -1,4 +1,6 @@
+#pragma once
 #include <raylib.h>
+
 #include "grid.hpp"
 
 class Game
@@ -11,4 +13,5 @@ class Game
 
 	private:
 		Grid grid;
+		Pawn pawn;
 };

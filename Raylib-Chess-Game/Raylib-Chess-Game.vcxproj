@@ -130,10 +130,13 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pawn.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="data.hpp" />
     <ClInclude Include="game.hpp" />
     <ClInclude Include="grid.hpp" />
+    <ClInclude Include="pawn.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
