@@ -19,6 +19,11 @@ class Grid
 		void Update(int id);
 
 	private:
+		int offset_x, offset_y, tile_x, tile_y;
+		Vector2 click_position;
+
+		void Collision(int id, int x, int y);
+
 		GRID_DATA grid[64];
 
 		Color red = Color{ 255, 141, 133, 255 };
