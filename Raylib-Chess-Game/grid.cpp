@@ -1,26 +1,22 @@
 #include <raylib.h>
-
 #include "grid.hpp"
-#include "data.hpp"
 
 Grid::Grid()
 {
-	tile_x = tile_y = spot_x = spot_y = 0;
+	tile_x = tile_y = 0;
 	click_position = Vector2{ 0, 0 };
-	selected_pawn = false;
 
 	for (int i = 0; i < GRID_AMOUNT * GRID_AMOUNT; i++)
 	{
 		grid[i].x = (i % GRID_AMOUNT);
 		grid[i].y = (i / GRID_AMOUNT);
 		grid[i].color = red;
-	}
 
-	for (int i = 0; i < 2; i++)
-	{
-		free_spots[i].x = 0;
-		free_spots[i].y = 0;
+		empty_spots[i].x = (i % GRID_AMOUNT);
+		empty_spots[i].y = (i / GRID_AMOUNT);
 	}
+	
+	ResetEmptySpots();
 }
 
 Grid::~Grid()
@@ -43,15 +39,8 @@ void Grid::Draw(int id)
 
 	DrawRectangleLines(tile_x, tile_y, GRID_SIZE, GRID_SIZE, BLACK);
 
-	if (selected_pawn)
-	{
-		for (int i = 0; i < 2; i++)
-		{
-			spot_x = (free_spots[i].x * GRID_SIZE) + OFFSET_X + 40;
-			spot_y = (free_spots[i].y * GRID_SIZE) + OFFSET_Y + 40;
-			DrawCircle(spot_x, spot_y, 20, LIGHTGRAY);
-		}
-	}
+	//draw empty spots
+	if (empty_spots[id].active) DrawCircle((pawn.pawns[id].x * GRID_SIZE) + OFFSET_X + 40, pawn.pawns[id].y * GRID_SIZE + OFFSET_Y + 40, 20, LIGHTGRAY);
 }
 
 void Grid::Update(int id)
@@ -69,35 +58,50 @@ void Grid::Collision(int id, int x, int y)
 
 	if (GetMouseX() > x && GetMouseX() < x + GRID_SIZE && GetMouseY() > y && GetMouseY() < y + GRID_SIZE)
 	{
+		//int pawn_x = pawn.pawns[id].x;
+		//int pawn_y = pawn.pawns[id].y;
 		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 		{
-			if (selected_pawn == false)
+			for (int i = 0; i < GRID_AMOUNT * GRID_AMOUNT; i++)
 			{
-				for (int i = 0; i < 16; i++)
+				if (pawn.pawns[i].x == id_x && pawn.pawns[i].y == id_y && pawn.pawns[i].active)
 				{
-					if (pawn.pawns[i].x == id_x && pawn.pawns[i].y == id_y)
-					{
-						grid[id].color = green;
-						click_position = Vector2{ id_x, id_y };
-						selected_pawn = true;
-
-						for (int j = 0; j < 2; j++)
-						{
-							free_spots[j].x = id_x;
-							free_spots[j].y = id_y - (j + 1);
-						}
-
-						break;
-					}
+					grid[id].color = green;
+					click_position = Vector2{ id_x, id_y };
+					ResetEmptySpots();
+					AddNewEmptySpots(i, pawn.pawns[i].type);
 				}
-			} else {
-				//code code code
 			}
-		}
-		else {
+		} else {
 			grid[id].color = yellow;
 		}
 	} else {
 		grid[id].color = red;
+	}
+}
+
+void Grid::ResetEmptySpots() { for (int i = 0; i < GRID_AMOUNT * GRID_AMOUNT; i++) empty_spots[i].active = false; }
+
+void Grid::AddNewEmptySpots(int id, int type)
+{
+	switch (type)
+	{
+		case 0:
+		{
+			//Move Forward Code for Regular Pawn
+			if (pawn.pawns[id - 8].active == false)
+			{
+				if (id > 7)
+				{
+					for (int i = 0; i < 2; i++)
+					{
+						if (id - ((i + 1) * 8) > 7)
+						{
+							empty_spots[id - ((i + 1) * 8)].active = true;
+						}
+					}
+				}
+			}
+		}
 	}
 }

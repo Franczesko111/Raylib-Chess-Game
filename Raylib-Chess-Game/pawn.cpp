@@ -6,11 +6,15 @@ using namespace std;
 
 Pawn::Pawn()
 {
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < GRID_AMOUNT * GRID_AMOUNT; i++)
 	{
-		pawns[i].x = i % 8;
-		pawns[i].y = (i / 8) + 6;
+		pawns[i].x = i % GRID_AMOUNT;
+		pawns[i].y = i / GRID_AMOUNT;
 		pawns[i].type = 0;
+		if (i / GRID_AMOUNT >= 6)
+			pawns[i].active = true;
+		else
+			pawns[i].active = false;
 	}
 }
 
@@ -21,7 +25,7 @@ Pawn::~Pawn()
 
 void Pawn::Draw(int id)
 {
-	DrawCircle((pawns[id].x * GRID_SIZE) + OFFSET_X + 40, (pawns[id].y * GRID_SIZE) + OFFSET_Y + 40, 30, PURPLE);
+	if (pawns[id].active == true) DrawCircle((pawns[id].x * GRID_SIZE) + OFFSET_X + 40, (pawns[id].y * GRID_SIZE) + OFFSET_Y + 40, 30, PURPLE);
 }
 
 void Pawn::Update()

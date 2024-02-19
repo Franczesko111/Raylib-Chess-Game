@@ -4,6 +4,8 @@
 
 struct PAWN_DATA
 {
+	bool active;
+
 	int x;
 	int y;
 	int type;
@@ -17,7 +19,7 @@ class Pawn
 		void Draw(int id);
 		void Update();
 
-		PAWN_DATA pawns[16];
+		PAWN_DATA pawns[GRID_AMOUNT * GRID_AMOUNT];
 
 	private:
 };
