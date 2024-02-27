@@ -36,6 +36,11 @@ class Grid
 		void ResetEmptySpots();
 		void AddNewEmptySpots(int id, int type);
 
+		void PawnMoveForward(int& id);
+		void PawnMoveBackwards(int& id);
+		void PawnMoveSideRight(int& id);
+		void PawnMoveSideLeft(int& id);
+
 		EMPTY_SPOTS empty_spots[GRID_AMOUNT * GRID_AMOUNT];
 		GRID_DATA grid[GRID_AMOUNT * GRID_AMOUNT];
 

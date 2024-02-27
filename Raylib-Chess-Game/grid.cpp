@@ -1,6 +1,9 @@
 #include <raylib.h>
 #include "grid.hpp"
 
+#include <iostream>
+using namespace std;
+
 Grid::Grid()
 {
 	tile_x = tile_y = 0;
@@ -58,8 +61,6 @@ void Grid::Collision(int id, int x, int y)
 
 	if (GetMouseX() > x && GetMouseX() < x + GRID_SIZE && GetMouseY() > y && GetMouseY() < y + GRID_SIZE)
 	{
-		//int pawn_x = pawn.pawns[id].x;
-		//int pawn_y = pawn.pawns[id].y;
 		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 		{
 			for (int i = 0; i < GRID_AMOUNT * GRID_AMOUNT; i++)
@@ -80,28 +81,43 @@ void Grid::Collision(int id, int x, int y)
 	}
 }
 
-void Grid::ResetEmptySpots() { for (int i = 0; i < GRID_AMOUNT * GRID_AMOUNT; i++) empty_spots[i].active = false; }
+void Grid::ResetEmptySpots() { for (int i = 0; i < GRID_AMOUNT * GRID_AMOUNT; i++) { empty_spots[i].active = false; } }
 
 void Grid::AddNewEmptySpots(int id, int type)
 {
+	int empty_spot_ID = id;
+	cout << pawn.pawns[id].active << endl;
 	switch (type)
 	{
 		case 0:
 		{
-			//Move Forward Code for Regular Pawn
-			if (pawn.pawns[id - 8].active == false)
-			{
-				if (id > 7)
-				{
-					for (int i = 0; i < 2; i++)
-					{
-						if (id - ((i + 1) * 8) > 7)
-						{
-							empty_spots[id - ((i + 1) * 8)].active = true;
-						}
-					}
-				}
-			}
+			PawnMoveForward(empty_spot_ID);
+			empty_spot_ID = id;
+			PawnMoveBackwards(empty_spot_ID);
+		}
+	}
+}
+
+void Grid::PawnMoveForward(int& id)
+{
+	if (pawn.pawns[id - 8].active == false)
+	{
+		if (id > GRID_AMOUNT - 1)
+		{
+			empty_spots[id - 8].active = true;
+			id -= 8;
+		}
+	}
+}
+
+void Grid::PawnMoveBackwards(int& id)
+{
+	if (pawn.pawns[id + 8].active == false)
+	{
+		if (id < (GRID_AMOUNT * GRID_AMOUNT) - 8)
+		{
+			empty_spots[id + 8].active = true;
+			id += 8;
 		}
 	}
 }

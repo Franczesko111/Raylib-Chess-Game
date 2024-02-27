@@ -11,7 +11,8 @@ Pawn::Pawn()
 		pawns[i].x = i % GRID_AMOUNT;
 		pawns[i].y = i / GRID_AMOUNT;
 		pawns[i].type = 0;
-		if (i / GRID_AMOUNT >= 6)
+		pawns[i].color = PURPLE;
+		if (i / GRID_AMOUNT >= 3 && i / GRID_AMOUNT <= 4)
 			pawns[i].active = true;
 		else
 			pawns[i].active = false;
@@ -25,7 +26,7 @@ Pawn::~Pawn()
 
 void Pawn::Draw(int id)
 {
-	if (pawns[id].active == true) DrawCircle((pawns[id].x * GRID_SIZE) + OFFSET_X + 40, (pawns[id].y * GRID_SIZE) + OFFSET_Y + 40, 30, PURPLE);
+	if (pawns[id].active) DrawCircle((pawns[id].x * GRID_SIZE) + OFFSET_X + 40, (pawns[id].y * GRID_SIZE) + OFFSET_Y + 40, 30, pawns[id].color);
 }
 
 void Pawn::Update()

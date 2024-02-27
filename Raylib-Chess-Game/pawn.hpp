@@ -9,6 +9,8 @@ struct PAWN_DATA
 	int x;
 	int y;
 	int type;
+
+	Color color;
 };
 
 class Pawn
@@ -22,4 +24,5 @@ class Pawn
 		PAWN_DATA pawns[GRID_AMOUNT * GRID_AMOUNT];
 
 	private:
+
 };
